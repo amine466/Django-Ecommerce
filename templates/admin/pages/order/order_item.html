@@ -1,0 +1,131 @@
+{% extends "admin/partials/layout.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
+{% include "admin/partials/header.html" %}
+<main class="content px-3 py-2">
+    <div class="container-fluid">
+        <div class="mb-5 text-center">
+            <h2>Add Order Items</h2>
+        </div>
+    </div>
+    
+    <div class="container card w-75">
+        <div class="card-body">               
+            <div id="product-selection">
+                <div class="row">
+                    <div class="col-md-6">
+                        <label for="product">Product</label>
+                        <select id="product" class="form-control" required>
+                            <option value="">Choose Product</option>
+                            {% for product in products %}
+                                <option value="{{ product.id }}" data-name="{{ product.name }}" data-category="{{ product.category }}" data-price="{{ product.price }}">
+                                    {{ product.name }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <label for="quantity">Quantity</label>
+                        <input type="number" id="quantity" class="form-control" min="1" required>
+                    </div>
+                    <div class="col-md-3 d-flex align-items-end">
+                        <button type="button" id="add-item" class="btn btn-primary">Add Product</button>
+                    </div>
+                </div>
+            </div>
+            <form method="POST" action="{% url 'Order_Items' order.id %}">
+                {% csrf_token %}
+                <div class="card border-0">
+                    <div class="card-header d-flex justify-content-between">
+                        <h5 class="card-title">Order Products</h5>
+                    </div>
+                    <div class="card-body">
+                        <table class="table">
+                            <thead>
+                              <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">Name</th>
+                                <th scope="col">Price</th>
+                                <th scope="col">Quantity</th>
+                                <th scope="col">Total</th>
+                                <th scope="col">Actions</th>
+                              </tr>
+                            </thead>
+                            <tbody id="order-items">
+                                {% for item in order_items %}
+                                <tr>
+                                    <td>{{ forloop.counter }}</td>
+                                    <td>{{ item.product.name }}</td>
+                                    <td>{{ item.product.price }}</td>
+                                    <td>{{ item.quantity }}</td>
+                                    <td>{{ item.total }}</td>
+                                    <td>
+                                        <button type="button" class="remove-item btn btn-danger">Remove</button>
+                                    </td>
+                                    <input type="hidden" name="products" value="{{ item.product.id }}">
+                                    <input type="hidden" name="quantities" value="{{ item.quantity }}">
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-success">Save Order Items</button>
+            </form>
+        </div>
+    </div>
+</main>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const addItemButton = document.getElementById("add-item");
+        const productSelect = document.getElementById("product");
+        const quantityInput = document.getElementById("quantity");
+        const orderItemsTable = document.getElementById("order-items");
+    
+        let itemIndex = 0;
+    
+        addItemButton.addEventListener("click", function () {
+            const productId = productSelect.value;
+            const productName = productSelect.options[productSelect.selectedIndex].text;
+            const productPrice = parseFloat(productSelect.options[productSelect.selectedIndex].dataset.price);
+            const quantity = parseInt(quantityInput.value);
+    
+            if (!productId || quantity <= 0) {
+                alert("Please select a valid product and quantity.");
+                return;
+            }
+    
+            const total = (productPrice * quantity).toFixed(2);
+    
+            // Create a row in the table
+            const row = document.createElement("tr");
+            row.innerHTML = `
+                <td>${itemIndex + 1}</td>
+                <td>${productName}</td>
+                <td>${productPrice.toFixed(2)}</td>
+                <td>${quantity}</td>
+                <td>${total}</td>
+                <td>
+                    <button type="button" class="remove-item btn btn-danger">Remove</button>
+                </td>
+                <input type="hidden" name="products" value="${productId}">
+                <input type="hidden" name="quantities" value="${quantity}">
+            `;
+            orderItemsTable.appendChild(row);
+            itemIndex++;
+    
+            // Reset fields
+            productSelect.value = "";
+            quantityInput.value = "";
+        });
+    
+        document.addEventListener("click", function (e) {
+            if (e.target.classList.contains("remove-item")) {
+                e.target.closest("tr").remove();
+            }
+        });
+    });    
+</script>
+{% include "admin/partials/footer.html" %}
+{% endblock content %}

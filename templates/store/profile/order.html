@@ -1,0 +1,68 @@
+{% extends "store/partials/layout.html" %}
+{% block content %}
+<!-- Breadcrumb Section Begin -->
+<section class="breadcrumb-section set-bg" data-setbg="{{ settings.banner.url }}">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 text-center">
+                <div class="breadcrumb__text">
+                    <h2>Order Details</h2>
+                    <div class="breadcrumb__option">
+                        <a href="{% url "Index" %}">Home</a>
+                        <a href="{% url "Orders" %}">Orders</a>
+                        <span>Order Details</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Breadcrumb Section End -->
+
+<!-- Shoping Cart Section Begin -->
+<section class="shoping-cart spad">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="shoping__cart__table">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th class="shoping__product">Products</th>
+                                <th>Price</th>
+                                <th>Quantity</th>
+                                <th>Total</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for item in order.items.all %}
+                            <tr>
+                                <td class="shoping__cart__item">
+                                    <img src="{{ item.product.image.url }}" alt="{{ item.product.name }}" class="w-25 h-25">
+                                    <h5>{{ item.product.name }}</h5>
+                                </td>
+                                <td class="shoping__cart__price">
+                                    ${{ item.price }}
+                                </td>
+                                <td class="shoping__cart__quantity">
+                                    <div class="quantity">
+                                        <span>{{ item.quantity }}</span>
+                                    </div>
+                                </td>
+                                <td class="shoping__cart__total">
+                                    ${{ item.total|floatformat:2 }}
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                    <div class="shoping__cart__btns">
+                        <a href="{% url "Orders" %}" class="primary-btn">Orders</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Shoping Cart Section End -->
+{% endblock content %}

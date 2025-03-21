@@ -1,0 +1,129 @@
+{% extends "admin/partials/layout.html" %}
+{% block content %}
+{% include "admin/partials/header.html" %}
+<main class="content px-3 py-2">
+    <div class="container-fluid">
+        <div class="mb-5">
+            <h2>Categories</h2>
+        </div>
+        {% if messages %}
+        <div class="alert-container">
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }} text-center">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+    </div>
+    <div class="card border-0">
+        <div class="card-header d-flex justify-content-between">
+            <h5 class="card-title">Category List</h5>
+            <a href="{% url "Add_Category" %}" class="btn btn-success">Add New Category</a>
+        </div>
+        <div class="card-body">
+            <table class="table">
+                <thead>
+                  <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Status</th>
+                    <th scope="col">Created at</th>
+                    <th scope="col">Updated at</th>
+                    <th scope="col">Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for category in page_obj %}
+                  <tr>
+                    <th scope="row">{{ forloop.counter|add:page_obj.start_index|add:-1 }}</th>
+                    <td>{{ category.name }}</td>
+                    {% if category.status == 'active' %}
+                    <td>Active</td>
+                    {% else %}
+                    <td>Not Active</td>
+                    {% endif %}
+                    <td>{{ category.created_at }}</td>
+                    <td>{{ category.updated_at }}</td>
+                    <td>
+                        <a href="{% url "Edit_Category" category.id %}" class="btn btn-warning"><i class="fa-solid fa-pen"></i></a>
+                        <button data-bs-toggle="modal" data-bs-target="#deleteModal" data-category-name="{{ category.name }}" data-category-id="{{ category.id }}"  class="btn btn-danger delete-btn"><i class="fa-solid fa-trash"></i></button>
+                    </td>
+                  </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+            <!-- Pagination Controls -->
+            <nav aria-label="Page navigation">
+                <ul class="pagination">
+                    {% if page_obj.has_previous %}
+                        <li class="page-item">
+                            <a class="page-link" href="?page=1">First</a>
+                        </li>
+                        <li class="page-item">
+                            <a class="page-link" href="?page={{ page_obj.previous_page_number }}">Previous</a>
+                        </li>
+                    {% endif %}
+
+                    <li class="page-item active">
+                        <a class="page-link" href="?page={{ page_obj.number }}">{{ page_obj.number }}</a>
+                    </li>
+
+                    {% if page_obj.has_next %}
+                        <li class="page-item">
+                            <a class="page-link" href="?page={{ page_obj.next_page_number }}">Next</a>
+                        </li>
+                        <li class="page-item">
+                            <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}">Last</a>
+                        </li>
+                    {% endif %}
+                </ul>
+            </nav>
+        </div>
+    </div>
+</main>
+<!-- Single Delete Confirmation Modal -->
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteModalLabel">Confirm Deletion</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to delete <strong id="categoryName"></strong>?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <form id="deleteForm" method="post">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-danger">Yes, Delete</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        let deleteModal = document.getElementById("deleteModal");
+        let categoryName = document.getElementById("categoryName");
+        let deleteForm = document.getElementById("deleteForm");
+    
+        document.querySelectorAll(".delete-btn").forEach(button => {
+            button.addEventListener("click", function () {
+                let categoryId = this.getAttribute("data-category-id");
+                let name = this.getAttribute("data-category-name");
+    
+                if (!categoryId) {
+                    console.error("Error: categoryId is null or undefined!");
+                    return;
+                }
+    
+                categoryName.textContent = name;
+                deleteForm.action = `/admin/category/delete/${categoryId}`;
+            });
+        });
+    });
+</script>
+{% include "admin/partials/footer.html" %}
+{% endblock content %}

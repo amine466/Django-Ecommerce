@@ -1,0 +1,138 @@
+{% extends "admin/partials/layout.html" %}
+{% block content %}
+{% include "admin/partials/header.html" %}
+<main class="content px-3 py-2">
+    <div class="container-fluid">
+        <div class="mb-5">
+            <h2>Products</h2>
+        </div>
+        {% if messages %}
+        <div class="alert-container">
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }} text-center">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+    </div>
+    <div class="card border-0">
+        <div class="card-header d-flex justify-content-between">
+            <h5 class="card-title">Product List</h5>
+            <a href="{% url "Add_Product" %}" class="btn btn-success">Add New Product</a>
+        </div>
+        <div class="card-body">
+            <table class="table">
+                <thead>
+                  <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Category</th>
+                    <th scope="col">price</th>
+                    <th scope="col">color</th>
+                    <th scope="col">Status</th>
+                    <th scope="col">Created at</th>
+                    <th scope="col">Updated at</th>
+                    <th scope="col">Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for product in page_obj %}
+                  <tr>
+                    <th scope="row">{{ forloop.counter|add:page_obj.start_index|add:-1 }}</th>
+                    <td>{{ product.name }}</td>
+                    <td>{{ product.category }}</td>
+                    <td>{{ product.rice }}</td>
+                    <td>{{ product.color }}</td>
+                    {% if product.status == 'active' %}
+                    <td>Active</td>
+                    {% else %}
+                    <td>Not Active</td>
+                    {% endif %}
+                    <td>{{ product.created_at }}</td>
+                    <td>{{ product.updated_at}}</td>
+                    <td>
+                        <a href="{% url "View_Product" product.id %}" class="btn btn-primary"><i class="fa-solid fa-eye"></i></a>
+                        <a href="{% url "Edit_Product" product.id %}" class="btn btn-warning"><i class="fa-solid fa-pen"></i></a>
+                        <button data-bs-toggle="modal" data-bs-target="#deleteModal" data-product-name="{{ product.name }}" data-product-id="{{ product.id }}"  class="btn btn-danger delete-btn"><i class="fa-solid fa-trash"></i></button>
+                    </td>
+                  </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+            <!-- Pagination Controls -->
+            <nav aria-label="Page navigation">
+                <ul class="pagination">
+                    {% if page_obj.has_previous %}
+                        <li class="page-item">
+                            <a class="page-link" href="?page=1">First</a>
+                        </li>
+                        <li class="page-item">
+                            <a class="page-link" href="?page={{ page_obj.previous_page_number }}">Previous</a>
+                        </li>
+                    {% endif %}
+
+                    <li class="page-item active">
+                        <a class="page-link" href="?page={{ page_obj.number }}">{{ page_obj.number }}</a>
+                    </li>
+
+                    {% if page_obj.has_next %}
+                        <li class="page-item">
+                            <a class="page-link" href="?page={{ page_obj.next_page_number }}">Next</a>
+                        </li>
+                        <li class="page-item">
+                            <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}">Last</a>
+                        </li>
+                    {% endif %}
+                </ul>
+            </nav>
+        </div>
+    </div>
+</main>
+<!-- Single Delete Confirmation Modal -->
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteModalLabel">Confirm Deletion</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to delete <strong id="productName"></strong>?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <form id="deleteForm" method="post">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-danger">Yes, Delete</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        let deleteModal = document.getElementById("deleteModal");
+        let productName = document.getElementById("productName");
+        let deleteForm = document.getElementById("deleteForm");
+    
+        document.querySelectorAll(".delete-btn").forEach(button => {
+            button.addEventListener("click", function () {
+                let productId = this.getAttribute("data-product-id");
+                let name = this.getAttribute("data-product-name");
+    
+                if (!productId) {
+                    console.error("Error: productId is null or undefined!");
+                    return;
+                }
+    
+                console.log(`Deleting Product ID: ${productId}`); // Debugging
+    
+                productName.textContent = name;
+                deleteForm.action = `/admin/product/delete/${productId}`;
+            });
+        });
+    });
+</script>
+{% include "admin/partials/footer.html" %}
+{% endblock content %}

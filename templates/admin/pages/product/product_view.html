@@ -1,0 +1,39 @@
+{% extends "admin/partials/layout.html" %}
+{% block content %}
+{% include "admin/partials/header.html" %}
+<main class="content px-3 py-2">
+    <div class="container">
+        <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow-lg border-0 rounded-4">
+            <div class="row g-0">
+                <div class="col-md-6">
+                <img src="{{ product.image.url }}" class="img-fluid rounded-start w-100" alt="{{ product.name }}">
+                </div>
+                <div class="col-md-6">
+                <div class="card-body">
+                    <h2 class="card-title mb-3">{{ product.name }}</h2>
+                    <p class="text-muted">Category: {{ product.category }}</p>
+                    <p class="text-muted">Color: {{ product.color }}</p>
+                    <p class="fw-bold text-primary">Price: ${{ product.price }}</p>
+                    <p class="badge {% if product.status == 'active' %}bg-success{% else %}bg-danger{% endif %}">
+                        {{ product.get_status_display }}
+                    </p>
+                    <p class="badge {% if product.is_featured %}bg-success{% else %}bg-danger{% endif %}">
+                        {% if product.is_featured %}Is Featured{% else %}Not Featured{% endif %}</p>
+                    <p>{{ product.description }}</p>
+                    <hr>
+                    <div class="d-flex justify-content-between">
+                    <a href="{% url 'Product' %}" class="btn btn-outline-primary">Return</a>
+                    <small class="text-muted">Created at: {{ product.created_at|date:"M d, Y" }}</small>
+                    </div>
+                </div>
+                </div>
+            </div>
+            </div>
+        </div>
+        </div>
+    </div>
+</main>
+{% include "admin/partials/footer.html" %}
+{% endblock content %}

@@ -1,0 +1,27 @@
+{% extends "admin/partials/layout.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
+{% include "admin/partials/header.html" %}
+<main class="content px-3 py-2">
+    <div class="container-fluid">
+        <div class="mb-5 text-center">
+            <h2>Add Product</h2>
+        </div>
+    </div>
+    <div class="container card w-75">
+        <div class="card-body">
+            <form method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    {{ form.media }}
+                    <div class="form-group p-4">
+                        {{ form|crispy }}
+                    </div>
+                    <div class="form-group">
+                        <button class="btn btn-outline-success" type="submit">Create</button>
+                    </div>
+            </form>
+        </div>
+    </div>
+</main>
+{% include "admin/partials/footer.html" %}
+{% endblock content %}

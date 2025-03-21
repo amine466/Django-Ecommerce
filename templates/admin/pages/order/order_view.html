@@ -1,0 +1,90 @@
+{% extends "admin/partials/layout.html" %}
+{% block content %}
+{% include "admin/partials/header.html" %}
+<main class="content px-3 py-2">
+    <div class="container-fluid">
+        <div class="mb-4 text-center">
+            <h2>Order Details</h2>
+        </div>
+
+        <div class="container card shadow-lg p-4 w-75">
+            <div class="card-body">
+                <!-- Order Summary -->
+                <div class="mb-3">
+                    <h5 class="text-secondary">Order #{{ order.id }}</h5>
+                    <p><strong>Date:</strong> {{ order.created_at }}</p>
+                    <p><strong>Status:</strong> <span class="badge bg-success">{{ order.status }}</span></p>
+                </div>
+
+                <!-- Customer Info -->
+                <div class="card bg-light p-1 mb-4">
+                    <div class="card-body">
+                        <div class="row g-3"> 
+                            <div class="col-4">
+                                <h6 class="text-dark">Customer Information</h6>
+                                <p><strong>Name:</strong> {{ order.customer }}</p>
+                                <p><strong>Email:</strong> {{ order.customer.email }}</p>
+                                <p><strong>Phone:</strong> {{ order.customer.phone }}</p>
+                            </div>
+                            <div class="col-8">
+                                <h6 class="text-dark">Customer Address</h6>
+                                <div class="row g-3">
+                                    <div class="col-4">
+                                        <p><strong>Country:</strong> {{ order.country }}</p>
+                                        <p><strong>City:</strong> {{ order.city }}</p>
+                                    </div>
+                                    <div class="col-8">
+                                        <p><strong>Addresse:</strong> {{ order.address }}</p>
+                                        <p><strong>Post Code:</strong> {{ order.postcode }}</p>
+                                    </div>
+                                </div>
+                            </div>       
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Order Items Table -->
+                <div class="table-responsive">
+                    <table class="table table-bordered table-striped">
+                        <thead class="table-dark">
+                            <tr>
+                                <th>#</th>
+                                <th>Product</th>
+                                <th>Category</th>
+                                <th>Price</th>
+                                <th>Quantity</th>
+                                <th>Total</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for item in order_items %}
+                            <tr>
+                                <td>{{ forloop.counter }}</td>
+                                <td>{{ item.product.name }}</td>
+                                <td>{{ item.product.category }}</td>
+                                <td>${{ item.product.price }}</td>
+                                <td>{{ item.quantity }}</td>
+                                <td>${{ item.total }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Order Total -->
+                <div class="d-flex justify-content-between align-items-center mt-3">
+                    <h5 class="text-success">Total Price: ${{ order.total_price }}</h5>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="mt-4 text-center">
+                    <a href="{% url 'Edit_Order' order.id %}" class="btn btn-warning me-2">Edit Order</a>
+                    <a href="{% url 'Delete_Order' order.id %}" class="btn btn-danger me-2">Delete Order</a>
+                    <a href="{% url 'Order_List' %}" class="btn btn-secondary">Back to Orders</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+{% include "admin/partials/footer.html" %}
+{% endblock content %}

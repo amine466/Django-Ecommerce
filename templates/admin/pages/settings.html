@@ -1,0 +1,32 @@
+{% extends "admin/partials/layout.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
+{% include "admin/partials/header.html" %}
+<main class="content px-3 py-2">
+    <div class="container">
+        <h2 class="mb-4">Site Settings</h2>
+        <div class="card w-75 mx-auto">
+            <div class="card-body">
+                {% if messages %}
+                <div class="alert-container">
+                    {% for message in messages %}
+                        <div class="alert alert-{{ message.tags }} text-center">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                </div>
+                {% endif %}
+                <form method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    {{ form.media }}
+                    <div class="form-group p-4">
+                        {{ form|crispy }}
+                    </div>
+                    <button type="submit" class="btn btn-primary">Save</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</main>
+{% include "admin/partials/footer.html" %}
+{% endblock content %}

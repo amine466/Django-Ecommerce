@@ -1,0 +1,26 @@
+{% extends "store/partials/layout.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-lg-4 m-auto rounded-top wrapper">
+            <h2 class="text-center pt-3">Login</h2>
+            {% for message in messages %}
+            <div class="alert {% if message.tags == 'error' %}alert-danger{% else %}alert-success{% endif %}" role="alert">
+                {{ message }}
+              </div>
+            {% endfor %}
+            <form action="" method="POST">
+                {% csrf_token %}
+                {{ form|crispy }}
+                <div class="d-grid mt-3">
+                    <button type="submit" class="btn btn-success">Login</button>
+                    <p class="text-center mt-3">
+                        Don't Have an Account <a href="{% url "Signup" %}">Signup Here</a>
+                    </p>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock content %}

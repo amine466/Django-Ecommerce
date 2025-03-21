@@ -1,0 +1,73 @@
+{% extends "store/partials/layout.html" %}
+{% block content %}
+<!-- Breadcrumb Section Begin -->
+<section class="breadcrumb-section set-bg" data-setbg="{{ settings.banner.url }}">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 text-center">
+                <div class="breadcrumb__text">
+                    <h2>Wishlist</h2>
+                    <div class="breadcrumb__option">
+                        <a href="{% url "Index" %}">Home</a>
+                        <span>Wishlistt</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Breadcrumb Section End -->
+
+<!-- Shoping Cart Section Begin -->
+<section class="shoping-cart spad">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="shoping__cart__table">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th class="shoping__product">Products</th>
+                                <th>Price</th>
+                                <th></th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for item in wishlist_items %}
+                            <tr>
+                                <td class="shoping__cart__item">
+                                    <img src="{{ item.product.image.url }}" alt="{{ item.product.name }}" class="w-25 h-25">
+                                    <h5>{{ item.product.name }}</h5>
+                                </td>
+                                <td class="shoping__cart__price">
+                                    ${{ item.price }}
+                                </td>
+                                <td class="shoping__cart__item__close">
+                                    <a href="{% url "Move_Cart" item.product.id %}" class="btn primary-btn">Add to Cart</a>
+                                </td>
+                                <td class="shoping__cart__item__close">
+                                    <a href="{% url "Delete_Wishlist" item.product.id %}" class="btn btn-danger">Remove</a>
+                                </td>
+                            </tr>
+                            {% empty %}
+                            <tr>
+                                <td colspan="5" class="text-center">Your Wishlist is empty;</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="shoping__cart__btns">
+                    <a href="{% url "Shop" %}" class="primary-btn">CONTINUE SHOPPING</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Shoping Cart Section End -->
+{% endblock content %}

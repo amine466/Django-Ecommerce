@@ -1,0 +1,65 @@
+<div class="wrapper">
+    <aside id="sidebar" class="d-flex flex-column flex-shrink-0 p-3 text-bg-dark">
+        <a href="{% url "Dashboard" %}" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white">
+            <svg class="bi pe-none me-2" width="40" height="32"></svg>
+            <span class="fs-4">Dashboard</span>
+        </a>
+        <hr>
+        <ul class="nav nav-pills flex-column mb-auto">
+            <li class="nav-item">
+            <a href="{% url "Dashboard" %}" class="nav-link text-white {% if request.resolver_match.url_name == 'Dashboard' %}active{% endif %}" aria-current="page">
+                <svg class="bi pe-none me-2" width="16" height="16"></svg>
+                Home
+            </a>
+            </li>
+            <li>
+            <a href="{% url "Category" %}" class="nav-link text-white {% if request.resolver_match.url_name in 'Category Add_Category Edit_Category' %}active{% endif %}">
+                <svg class="bi pe-none me-2" width="16" height="16"></svg>
+                Categories
+            </a>
+            </li>
+            <li>
+            <a href="{% url "Product" %}" class="nav-link text-white {% if request.resolver_match.url_name in 'Product Add_Product Edit_Product View_Product' %}active{% endif %}">
+                <svg class="bi pe-none me-2" width="16" height="16"></svg>
+                Products
+            </a>
+            </li>
+            <li>
+                <a href="{% url "Customer" %}" class="nav-link text-white {% if request.resolver_match.url_name in 'Customer Add_Customer Edit_Customer' %}active{% endif %}">
+                    <svg class="bi pe-none me-2" width="16" height="16"></svg>
+                    Customers
+                </a>
+            </li>
+            <li>
+            <a href="{% url "Order_List" %}" class="nav-link text-white {% if request.resolver_match.url_name in 'Order_List Add_Order Edit_Order View_Order Order_Items' %}active{% endif %}">
+                <svg class="bi pe-none me-2" width="16" height="16"></svg>
+                Orders
+            </a>
+            </li>
+            <li>
+            <a href="{% url "Settings" %}" class="nav-link text-white {% if request.resolver_match.url_name == 'Settings' %}active{% endif %}">
+                <svg class="bi pe-none me-2" width="16" height="16"></svg>
+                Settings
+            </a>
+            </li>
+        </ul>
+        <hr>
+        <div class="dropdown">
+            <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                <span class="rounded-circle me-2"><i class="fa-solid fa-circle-user "></i></span>
+                <strong>{{ request.user.username }}</strong>
+            </a>
+            <ul class="dropdown-menu dropdown-menu-dark text-small shadow">
+            <li><a class="dropdown-item" onclick="document.getElementById('logout-form').submit(); return false;">Sign out</a></li>
+            <form id="logout-form" action="{% url 'logout' %}" method="post" style="display: none;">
+                {% csrf_token %}
+            </form>
+            </ul>
+        </div>
+    </aside>
+    <div class="main">
+        <nav class="navbar navbar-expand px-3 border-bottom">
+            <button class="btn" id="sidebar-toggle" type="button">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+        </nav>
