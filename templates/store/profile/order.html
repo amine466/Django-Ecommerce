@@ -42,7 +42,7 @@
                                     <h5>{{ item.product.name }}</h5>
                                 </td>
                                 <td class="shoping__cart__price">
-                                    ${{ item.price }}
+                                    ${{ item.product.price|floatformat:2 }}
                                 </td>
                                 <td class="shoping__cart__quantity">
                                     <div class="quantity">

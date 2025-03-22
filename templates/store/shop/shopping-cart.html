@@ -52,7 +52,7 @@
                                     </div>
                                 </td>
                                 <td class="shoping__cart__total">
-                                    ${{ item.total|floatformat:1 }}
+                                    ${{ item.total|floatformat:2 }}
                                 </td>
                                 <td class="shoping__cart__item__close">
                                     <a href="{% url "Delete_Cart" item.product.id %}"><span class="icon_close"></span></a>
@@ -78,8 +78,8 @@
                 <div class="shoping__checkout">
                     <h5>Cart Total</h5>
                     <ul>
-                        <li>Subtotal <span>${{ cart_subtotal }}</span></li>
-                        <li>Total <span>${{ cart_total }}</span></li>
+                        <li>Subtotal <span>${{ cart_subtotal|floatformat:2 }}</span></li>
+                        <li>Total <span>${{ cart_total|floatformat:2 }}</span></li>
                     </ul>
                     <a href="{% url "Checkout" %}" class="primary-btn">PROCEED TO CHECKOUT</a>
                 </div>

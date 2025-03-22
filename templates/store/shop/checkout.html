@@ -78,11 +78,11 @@
                                 <div class="checkout__order__products">Products <span>Total</span></div>
                                 <ul>
                                     {% for item in cart_items %}
-                                    <li>{{ item.product.name }} <span>${{ item.total|floatformat:1 }}</span></li>
+                                    <li>{{ item.product.name }} <span>${{ item.total|floatformat:2 }}</span></li>
                                     {% endfor %}
                                 </ul>
-                                <div class="checkout__order__subtotal">Subtotal <span>${{ cart_subtotal }}</span></div>
-                                <div class="checkout__order__total">Total <span>${{ cart_total }}</span></div>
+                                <div class="checkout__order__subtotal">Subtotal <span>${{ cart_subtotal|floatformat:2 }}</span></div>
+                                <div class="checkout__order__total">Total <span>${{ cart_total|floatformat:2 }}</span></div>
                                 <button type="submit" class="site-btn">PLACE ORDER</button>
                             </div>
                         </div>
