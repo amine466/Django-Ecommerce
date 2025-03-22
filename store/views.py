@@ -297,7 +297,6 @@ def create_order_from_cart(customer, cart, address, city, country, postcode):
             order = order,
             product = item['product'],
             quantity = item['quantity'],
-            price = item['price'],
             total = item['price'] * item['quantity']
         )
     
