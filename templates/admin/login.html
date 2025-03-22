@@ -6,6 +6,7 @@
             <div class="container card w-50 mt-5">
                 <div class="card-body">
                     <h2 class="text-center">Login</h2>
+                    <p class="text-center"> Username: Admin | Password: admin123</p>
                     <form method="POST">
                         {% csrf_token %}
                         {{ form|crispy }}
