@@ -14,13 +14,13 @@ A simple and fully functional e-commerce website built with Django. This project
 
 Here’s a screenshot of the admin dashboard where administrators can manage products and orders:
 
-![Admin Dashboard](images/Screenshot_2025_03_22_161240.png)
+![Admin Dashboard](images/Screenshot%202025-03-22%20161240.png)
 
 ## Website Screenshot
 
 Here’s a screenshot of the homepage where users can browse products:
 
-![Website Homepage](images/Screenshot_2025_03_22_161153.png)
+![Website Homepage](images/Screenshot%202025-03-22%20161240.png)
 
 ## Installation
 
