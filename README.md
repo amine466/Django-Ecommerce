@@ -20,7 +20,7 @@ Here’s a screenshot of the admin dashboard where administrators can manage pro
 
 Here’s a screenshot of the homepage where users can browse products:
 
-![Website Homepage](images/Screenshot%202025-03-22%20161240.png)
+![Website Homepage](images/Screenshot%202025-03-22%20161153.png)
 
 ## Installation
 
