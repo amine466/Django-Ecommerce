@@ -32,7 +32,7 @@ git clone https://github.com/amine466/Django-Ecommerce.git
 ```
 ### 2. Navigate into the project directory
 ```bash
-Django-Ecommerce
+cd Django-Ecommerce
 ```
 ### 3. Create and activate a virtual environment
 ```bash
