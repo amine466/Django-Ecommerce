@@ -43,11 +43,7 @@ source venv/bin/activate  # On Windows, use 'venv\Scripts\activate'
 ```bash
 pip install -r requirements.txt
 ```
-### 5. Set up the database
-```bash
-pip install -r requirements.txt
-```
-### 6. Run the development server
+### 5. Run the development server
 ```bash
 python manage.py runserver
 ```
